@@ -43,7 +43,7 @@ if api_endpoint == "validate_user":
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
     if st.button("Validate"):
-        df = fetch_data("validate_user", {"username": username, "password": password})
+        df = fetch_data("validate_user/", {"username": username, "password": password})
         if df is not None:
             st.success("User validated successfully!")
             output_string = "App User ID: " + str(df["AppUserID"].values[0]) + ", Full Name: " + df["FullName"].iloc[0]
@@ -58,7 +58,10 @@ elif api_endpoint == "find_current_semester_course_offerings":
     subject_code = st.text_input("Subject Code")
     course_number = st.text_input("Course Number")
     if st.button("Find Offerings"):
-        df = fetch_data("find_current_semester_course_offerings", {"subjectCode": subject_code, "courseNumber": course_number})
+        df = fetch_data(
+            "find_current_semester_course_offerings/", 
+            {"subjectCode": subject_code, "courseNumber": course_number}
+        )
         if df is not None and not df.empty:
             st.dataframe(df)
         else:
@@ -87,7 +90,9 @@ elif api_endpoint == "get_student_enrolled_course_offerings":
     st.header("Get Student Enrolled Course Offerings")
     student_id = st.number_input("Student ID", value=st.session_state.app_user_id, disabled=True)
     if st.button("Get Student's Enrollments"):
-        df = fetch_data("get_student_enrolled_course_offerings", {"studentID": student_id})
+        df = fetch_data(
+        "get_student_enrolled_course_offerings/", 
+        {"studentID": student_id})
         if df is not None and not df.empty:
             st.dataframe(df)
         else:
@@ -98,7 +103,7 @@ elif api_endpoint == "find_prerequisites":
     subject_code = st.text_input("Subject Code")
     course_number = st.text_input("Course Number")
     if st.button("Find Prerequisites"):
-        df = fetch_data("find_prerequisites", {"subjectCode": subject_code, "courseNumber": course_number})
+        df = fetch_data("find_prerequisites/", {"subjectCode": subject_code, "courseNumber": course_number})
         if df is not None and not df.empty:
             st.dataframe(df)
         else:
@@ -111,7 +116,7 @@ elif api_endpoint == "check_if_student_has_taken_all_prerequisites_for_course":
     course_number = st.text_input("Course Number")
     if st.button("Check Prerequisites"):
         df = fetch_data(
-            "check_if_student_has_taken_all_prerequisites_for_course",
+            "check_if_student_has_taken_all_prerequisites_for_course/",
             {"studentID": student_id, "subjectCode": subject_code, "courseNumber": course_number}
         )
         if df is not None:
